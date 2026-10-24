@@ -17,13 +17,15 @@ Check up ufw current status
 ```
 sudo ufw status verbose
 ```
+---
 Then deleting allowing rule from previous lab work
 
 ![ruledel](screenshots/deleterule.png)
 ```
 sudo ufw delete allow 8000/tcp
 ```
-Then enabling ufw logging and checking up for status again
+---
+And enabling ufw logging and checking up for status again
 
 ![loggingcheckup](screenshots/ufwstatusafterlogen.png)
 ```
