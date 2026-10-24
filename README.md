@@ -33,5 +33,27 @@ sudo ufw logging on
 sudo ufw status verbose
 ```
 ## Log entries
+Firstly starting up test server on subvm
+
+![testserv](screenshots/servstartup.png)
+```
+python3 -m http.server 8000
+```
+---
+Trying to curl test server on port 8000 from mainvm and getting timeout 
+
+![timeout](screenshots/servcurl.png)
+```
+curl --max-time 5 192.168.56.102:8000
+```
+---
+
+Looking up for log entries about this curl attempt
+
+![logs](screenshots/logs.png)
+```
+sudo grep "DPT=8000" /var/log/ufw.log | tail -n 5
+```
 ## Results 
+The firewall log on Sub shows several [UFW BLOCK] entries from 192.168.56.101 (Main) to port 8000/TCP. Each packet carries only the SYN flag, and all of them use the same source port (35222). This means curl was retrying the same connection attempt: it never received a SYN-ACK because ufw dropped the packets. This matches the timeout seen on Main
 ## Problems and conclusions 
