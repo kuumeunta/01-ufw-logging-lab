@@ -10,7 +10,7 @@ Checking the log for entries about the blocked connection.
 - VM2: Ubuntu 26.04, name: subvm, IP 192.168.56.102
 - Network: Host-Only
 
-## Set up for work
+## Setup
 Check up ufw current status
 
 ![checkup](screenshots/ufwstatusverbose.png)
@@ -55,5 +55,14 @@ Looking up for log entries about this curl attempt
 sudo grep "DPT=8000" /var/log/ufw.log | tail -n 5
 ```
 ## Results 
-The firewall log on Sub shows several [UFW BLOCK] entries from 192.168.56.101 (Main) to port 8000/TCP. Each packet carries only the SYN flag, and all of them use the same source port (35222). This means curl was retrying the same connection attempt: it never received a SYN-ACK because ufw dropped the packets. This matches the timeout seen on Main
+The firewall log on subvm shows several [UFW BLOCK] entries from 192.168.56.101 (mainvm) to port 8000/TCP. Each packet carries only the SYN flag, and all of them use the same source port (35222). This means curl was retrying the same connection attempt: it never received a SYN-ACK because ufw dropped the packets. This matches the timeout seen on mainvm.
+
 ## Problems and conclusions 
+- Problems:
+  - Command `sudo tail -n 20 /var/log/ufw.log` showed up too mгср extra info;
+    - switching to `sudo grep "DPT=8000" /var/log/ufw.log | tail -n 5` for a more focused view.
+
+- Conclusions:
+  - Check that logging is enabled before testing.
+  - Packets blocked by ufw are dropped silently, so the client only sees a timeout.
+  - One blocked connection attempt appears as several log lines (SYN retransmissions from the same source port).
