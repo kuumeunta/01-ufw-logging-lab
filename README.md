@@ -1,1 +1,2 @@
-# ufwlogs-lab-
+# ufw-logging-lab
+
