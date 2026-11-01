@@ -2,7 +2,7 @@
 Some work with ufw logs.
 
 ## Goal
-Checking the log for entries about the blocked connection.
+Working with logs, analyzing blocked requests and bad entries.
 
 ## Environment
 - Host: Windows 10, VirtualBox 7.2.22
